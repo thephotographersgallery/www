@@ -4,6 +4,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/gallery/{id}', [GalleryController::class, 'show'])->name('gallery.show');
   Route::post('/gallery', [GalleryController::class, 'create'])->name('gallery.create');
   Route::post('/images/store', function (Request $request) {
-    ini_set('memory_limit','100000240M');
+    ini_set('memory_limit', '100000240M');
     $gallery_id = $request->gallery_id;
     $request->validate([
       'images' => 'required|array',
@@ -53,25 +54,22 @@ Route::middleware('auth')->group(function () {
   })->name('images.store');
 
   Route::get('/images/all', function (Request $request) {
-    function split_into_three($array) {
-      $first = [];
-      $second = [];
-      $third = [];
-      foreach ($array as $k => $v) {
+    $galleries = \App\Models\Gallery::with('images')->get();
+    foreach ($galleries as $ga_k => $gallery) {
+      $images_arr = $gallery->images;
+      $images = [];
+      foreach ($images_arr as $k => $v) {
         if ($k % 3 == 0) {
-          $first[] = $v;
+          $images['f'][] = $v;
         } elseif ($k % 3 == 1) {
-          $second[] = $v;
+          $images['s'][] = $v;
         } else {
-          $third[] = $v;
+          $images['t'][] = $v;
         }
+        $galleries[$ga_k]['images'] = $images;
       }
-      dd([$first,$second,$third]);
     }
-    $arr = [1, 2, 3, 4, 5, 6];
-    split_into_three($arr);
-    $posts = Image::all();
-    dd($posts);
+    return view('list-items')->with('galleries', $galleries);
   })->name('');
 });
 

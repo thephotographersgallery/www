@@ -42,7 +42,7 @@ class GalleryController extends Controller {
   public function show($id) {
     $gallery = Gallery::find($id);
     $images_arr = $gallery->images;
-    $images=[];
+    $images = [];
     foreach ($images_arr as $k => $v) {
       if ($k % 3 == 0) {
         $images['f'][] = $v;

@@ -45,10 +45,10 @@
       {{--        </div>--}}
       {{--      </form>--}}
 
-      <form action="{{ route('images.store') }}" method="POST" enctype="multipart/form-data" class="my-2 flex items-center">
+      <form action="{{ route('images.store') }}" method="POST" enctype="multipart/form-data" class="my-2">
         @csrf
         <input type="hidden" name="gallery_id" value="{{$gallery->id}}">
-        <div class="">
+        <div>
           <label class="form-label" for="inputImage">Выберите фотографии:</label>
           <input
             type="file"
