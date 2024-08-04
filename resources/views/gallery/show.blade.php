@@ -67,7 +67,7 @@
 
       <div class="grid grid-cols-3 gap-4">
         @foreach($images as $img_col)
-          <div class="grid gap-4">
+          <div class="grid gap-2">
             @foreach($img_col as $img)
               <div>
                 <img class="h-auto max-w-full rounded-lg" src="/images/{{$img->image}}" alt="">
